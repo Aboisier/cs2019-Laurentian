@@ -29,15 +29,20 @@ app.use((req, res, next) => {
 const api = new Api();
 app.use('/api', api.getRouter());
 
+app.get( "/api/status", ( req: any, res ) => {
+    res.json({status: "up"});
+ });
+
 if (isDev()) {
     app.use(express.static(path.resolve(__dirname, '../frontend')));
-    app.get('/*', (req, res) => res.sendFile(path.resolve(__dirname, '../frontend/index.html')));
+    app.get('/*', (req, res) => 
+        res.sendFile(path.resolve(__dirname, '../frontend/index.html'))
+    );
 }
 else {
     app.use(express.static('frontend'));
     app.get('/*', (req, res) => res.sendFile('index.html'));
 }
-
 
 app.listen(process.env.PORT || 8080, () => {
     console.log(`Server started, listening on port ${process.env.PORT || 8080}.`);
